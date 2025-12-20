@@ -7,9 +7,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextOverflow
-import com.yourapp.ui.theme.Dimens
-import com.yourapp.ui.theme.customColors
+import com.design.template.ui.theme.Dimens
+import com.design.template.ui.theme.customColors
 
 @Composable
 fun ScannedTextCard(
