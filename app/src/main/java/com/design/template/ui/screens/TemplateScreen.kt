@@ -7,9 +7,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
@@ -17,15 +19,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 
-// Добавляем DocumentItem в SampleItem.kt или создаем здесь временно
 private data class DocumentItem(
     val id: Int,
     val title: String,
@@ -36,398 +38,288 @@ private data class DocumentItem(
 @Composable
 fun DocumentViewerScreen() {
     val scrollState = rememberScrollState()
-    var isFavorite by remember { mutableStateOf(false) }
-    
-    val relatedDocuments = remember {
-        listOf(
-            DocumentItem(1, "Video 1", "https://picsum.photos/seed/vid1/300/400"),
-            DocumentItem(2, "Photo 2", "https://picsum.photos/seed/vid2/300/400"),
-            DocumentItem(3, "Person", "https://picsum.photos/seed/person/300/400"),
-            DocumentItem(4, "Code 1", "https://picsum.photos/seed/code1/300/400"),
-            DocumentItem(5, "Code 2", "https://picsum.photos/seed/code2/300/400"),
-            DocumentItem(6, "Gallery", "https://picsum.photos/seed/gallery/300/400")
-        )
-    }
     
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { },
-                navigationIcon = {
-                    IconButton(onClick = { }) {
-                        Icon(
-                            Icons.Default.ArrowBack,
-                            contentDescription = "Back",
-                            tint = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-                },
-                actions = {
-                    IconButton(onClick = { }) {
-                        Icon(
-                            Icons.Default.Refresh,
-                            contentDescription = "Refresh",
-                            tint = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-                    IconButton(onClick = { }) {
-                        Icon(
-                            Icons.Default.RemoveRedEye,
-                            contentDescription = "View",
-                            tint = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-                    IconButton(onClick = { }) {
-                        Icon(
-                            Icons.Default.MoreVert,
-                            contentDescription = "More",
-                            tint = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface
-                )
-            )
-        },
-        bottomBar = {
-            BottomActionsBar()
-        }
+        containerColor = MaterialTheme.colorScheme.surface
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .background(MaterialTheme.colorScheme.surface)
+                .verticalScroll(scrollState)
         ) {
-            // Main Content Area
+            // Top Section - Back Arrow + Headers
             Column(
                 modifier = Modifier
-                    .weight(1f)
-                    .verticalScroll(scrollState)
-                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth()
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(
+                                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.3f),
+                                MaterialTheme.colorScheme.surface
+                            )
+                        )
+                    )
+                    .padding(16.dp)
             ) {
-                Spacer(modifier = Modifier.height(16.dp))
+                // Back Arrow
+                IconButton(
+                    onClick = { },
+                    modifier = Modifier.size(40.dp)
+                ) {
+                    Icon(
+                        Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Back",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
                 
-                // Document Card
-                DocumentCard(
-                    isFavorite = isFavorite,
-                    onFavoriteClick = { isFavorite = !isFavorite }
+                Spacer(modifier = Modifier.height(8.dp))
+                
+                // Название папки
+                Text(
+                    text = "← НАЗВАНИЕ ПАПКИ",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.Bold
                 )
                 
-                Spacer(modifier = Modifier.height(24.dp))
-            }
-            
-            // Bottom Carousel
-            DocumentCarousel(documents = relatedDocuments)
-        }
-    }
-}
-
-@Composable
-private fun DocumentCard(
-    isFavorite: Boolean,
-    onFavoriteClick: () -> Unit
-) {
-    ElevatedCard(
-        modifier = Modifier
-            .fillMaxWidth()
-            .shadow(8.dp, RoundedCornerShape(16.dp)),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.elevatedCardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-        ),
-        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 4.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(20.dp)
-        ) {
-            // Header
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
-                            text = "Project Contract - A4",
-                            style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Surface(
-                            color = MaterialTheme.colorScheme.surfaceVariant,
-                            shape = RoundedCornerShape(6.dp)
-                        ) {
-                            Text(
-                                text = "B",
-                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                                style = MaterialTheme.typography.labelSmall,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-                    }
-                    
-                    Spacer(modifier = Modifier.height(4.dp))
-                    
-                    Text(
-                        text = "Final version for client review, November 25.",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
-            
-            Spacer(modifier = Modifier.height(20.dp))
-            
-            // Content Row - Preview + Description
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                // Document Preview Image
-                Card(
-                    modifier = Modifier
-                        .width(140.dp)
-                        .height(180.dp),
-                    shape = RoundedCornerShape(12.dp),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-                ) {
-                    AsyncImage(
-                        model = "https://picsum.photos/seed/document/400/600",
-                        contentDescription = "Document preview",
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop
-                    )
-                }
+                Spacer(modifier = Modifier.height(12.dp))
                 
-                // Description Text
+                // Название документа
+                Text(
+                    text = "НАЗВАНИЕ ДОКУМЕНТА",
+                    style = MaterialTheme.typography.titleLarge.copy(fontSize = 24.sp),
+                    fontWeight = FontWeight.ExtraBold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                
+                Spacer(modifier = Modifier.height(8.dp))
+                
+                // Описание документа
+                Text(
+                    text = "ОПИСАНИЕ ДОКУМЕНТА",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            // Main Content Row - 50% Image + 50% Text
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(400.dp)
+                    .padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                // Left - Image (50%)
                 Column(
                     modifier = Modifier
-                        .weight(1f)
-                        .height(180.dp)
+                        .weight(0.5f)
+                        .fillMaxHeight()
                 ) {
                     Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f),
-                        shape = RoundedCornerShape(12.dp),
+                        modifier = Modifier.fillMaxSize(),
+                        shape = RoundedCornerShape(20.dp),
+                        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
                         colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surface
+                            containerColor = MaterialTheme.colorScheme.surfaceVariant
                         )
                     ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(12.dp)
-                                .verticalScroll(rememberScrollState())
-                        ) {
-                            Text(
-                                text = "AGREEMENT BETWEEN PARTIES...",
-                                style = MaterialTheme.typography.labelSmall,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                        Box(modifier = Modifier.fillMaxSize()) {
+                            AsyncImage(
+                                model = "https://picsum.photos/seed/document/600/800",
+                                contentDescription = "Document image",
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = ContentScale.Crop
                             )
                             
-                            Spacer(modifier = Modifier.height(8.dp))
-                            
-                            Text(
-                                text = "The document between the Client 'sweetslatintely, beneath the LIMITED HONTON COMPLETED PARTIES', and ComposeDions. The document both and Marker and said.\n\n" +
-                                        "PARTIES, this users the client's remeralities of no-imbarked advices and its personal likely relate to the end applicate under's but is theucciment.\n\n" +
-                                        "PARTIES, areement and minusent",
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f),
-                                lineHeight = MaterialTheme.typography.bodySmall.lineHeight
-                            )
+                            // Optional buttons at bottom
+                            Row(
+                                modifier = Modifier
+                                    .align(Alignment.BottomCenter)
+                                    .fillMaxWidth()
+                                    .background(
+                                        Brush.verticalGradient(
+                                            colors = listOf(
+                                                Color.Transparent,
+                                                Color.Black.copy(alpha = 0.7f)
+                                            )
+                                        )
+                                    )
+                                    .padding(12.dp),
+                                horizontalArrangement = Arrangement.Center,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                repeat(4) { index ->
+                                    Surface(
+                                        modifier = Modifier.size(10.dp),
+                                        shape = CircleShape,
+                                        color = if (index == 0) 
+                                            MaterialTheme.colorScheme.primary 
+                                        else 
+                                            Color.White.copy(alpha = 0.5f)
+                                    ) {}
+                                    if (index < 3) {
+                                        Spacer(modifier = Modifier.width(8.dp))
+                                    }
+                                }
+                            }
                         }
+                    }
+                }
+                
+                // Right - Original Text (50%)
+                Card(
+                    modifier = Modifier
+                        .weight(0.5f)
+                        .fillMaxHeight(),
+                    shape = RoundedCornerShape(20.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceContainer
+                    ),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp)
+                    ) {
+                        Text(
+                            text = "ОРИГИНАЛЬНЫЙ ТЕКСТ",
+                            style = MaterialTheme.typography.labelLarge,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                        
+                        Spacer(modifier = Modifier.height(12.dp))
+                        
+                        Text(
+                            text = "The document between the Client 'sweetslatintely, beneath the LIMITED HONTON COMPLETED PARTIES', and ComposeDions. The document both and Marker and said.\n\n" +
+                                    "PARTIES, this users the client's remeralities of no-imbarked advices and its personal likely relate to the end applicate under's but is theucciment.\n\n" +
+                                    "PARTIES, areement and minusent agreement between parties...",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            lineHeight = 22.sp
+                        )
                     }
                 }
             }
             
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(24.dp))
             
-            // Action Buttons
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            // TRANSLATE TEXT Section
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                shape = RoundedCornerShape(20.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.4f)
+                ),
+                elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
             ) {
-                ActionButton(
-                    icon = Icons.Default.SmartToy,
-                    text = "GPT",
-                    modifier = Modifier.weight(1f)
-                )
-                ActionButton(
-                    icon = Icons.Default.ContentCopy,
-                    text = "Copy",
-                    modifier = Modifier.weight(1f)
-                )
-                ActionButton(
-                    icon = Icons.Default.Photo,
-                    text = "Photo",
-                    modifier = Modifier.weight(1f)
-                )
-                ActionButton(
-                    icon = Icons.Default.Send,
-                    text = "Send",
-                    modifier = Modifier.weight(1f),
-                    isPrimary = true
-                )
-            }
-            
-            Spacer(modifier = Modifier.height(16.dp))
-            
-            // Footer Russian Text
-            Text(
-                text = "ДОГОВОР МЕЖДУ СТОРОНАМИ, ИСТИЕР? ІТОНИНТ TO ВНИИН КПАСНИ ГНЕВНИЯ БЕДЬ FOR THE МАРКО ЕЦ ЕВЕ ОІ. СРЕДАТИ И ДОГОВОР У ENERGY OF THE COMMODS FOR IYARS OF PLIMILITY OF USE-FOR LING AND DECENATION YН А СЕПІН МЕТАЛ, І ДОГОВОР ХІ МЕЖДУ СТОРОНАМИ ПОСІЛОДЮТТІ УПРОС МІСИТ, СОНІНЬ ДИЯЕСЇ ДПОСОВНИНИЙ ЦЕПОСТОСТИ ПОДЕЇТУ БЫІТРАТЛЯ.",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
-                maxLines = 3,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
-    }
-}
-
-@Composable
-private fun ActionButton(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
-    text: String,
-    modifier: Modifier = Modifier,
-    isPrimary: Boolean = false
-) {
-    OutlinedButton(
-        onClick = { },
-        modifier = modifier.height(40.dp),
-        shape = RoundedCornerShape(10.dp),
-        colors = ButtonDefaults.outlinedButtonColors(
-            containerColor = if (isPrimary) 
-                MaterialTheme.colorScheme.primaryContainer 
-            else 
-                Color.Transparent,
-            contentColor = if (isPrimary)
-                MaterialTheme.colorScheme.onPrimaryContainer
-            else
-                MaterialTheme.colorScheme.onSurface
-        ),
-        border = ButtonDefaults.outlinedButtonBorder.copy(
-            width = 1.dp,
-            brush = androidx.compose.ui.graphics.SolidColor(
-                if (isPrimary)
-                    MaterialTheme.colorScheme.primary.copy(alpha = 0.5f)
-                else
-                    MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
-            )
-        ),
-        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp)
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = text,
-            modifier = Modifier.size(18.dp)
-        )
-        Spacer(modifier = Modifier.width(4.dp))
-        Text(
-            text = text,
-            style = MaterialTheme.typography.labelMedium,
-            fontWeight = FontWeight.Medium
-        )
-    }
-}
-
-@Composable
-private fun BottomActionsBar() {
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        color = MaterialTheme.colorScheme.surface,
-        tonalElevation = 3.dp
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 4.dp, vertical = 8.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            BottomActionItem(icon = Icons.Default.Share, label = "Share")
-            BottomActionItem(icon = Icons.Default.Edit, label = "Edit")
-            BottomActionItem(icon = Icons.Default.RecordVoiceOver, label = "Speak")
-            BottomActionItem(icon = Icons.Default.LocalOffer, label = "Tags")
-            BottomActionItem(icon = Icons.Default.MoreHoriz, label = "More")
-            BottomActionItem(
-                icon = Icons.Default.Delete,
-                label = "Delete",
-                tint = MaterialTheme.colorScheme.error
-            )
-        }
-    }
-}
-
-@Composable
-private fun BottomActionItem(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
-    label: String,
-    tint: Color = MaterialTheme.colorScheme.onSurfaceVariant
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(horizontal = 4.dp)
-    ) {
-        IconButton(
-            onClick = { },
-            modifier = Modifier.size(40.dp)
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = label,
-                tint = tint,
-                modifier = Modifier.size(22.dp)
-            )
-        }
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelSmall,
-            color = tint,
-            maxLines = 1
-        )
-    }
-}
-
-@Composable
-private fun DocumentCarousel(documents: List<DocumentItem>) {
-    Column {
-        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
-        
-        LazyRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(120.dp)
-                .background(MaterialTheme.colorScheme.surface),
-            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 12.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            items(documents, key = { it.id }) { doc ->
-                Card(
+                Column(
                     modifier = Modifier
-                        .width(80.dp)
-                        .height(96.dp),
-                    shape = RoundedCornerShape(8.dp),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                        .fillMaxWidth()
+                        .padding(20.dp)
                 ) {
-                    AsyncImage(
-                        model = doc.imageUrl,
-                        contentDescription = doc.title,
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Crop
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Icon(
+                            Icons.Default.Translate,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.secondary,
+                            modifier = Modifier.size(28.dp)
+                        )
+                        Text(
+                            text = "TRANSLATE TEXT",
+                            style = MaterialTheme.typography.titleLarge.copy(fontSize = 20.sp),
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer
+                        )
+                    }
+                    
+                    Spacer(modifier = Modifier.height(16.dp))
+                    
+                    Text(
+                        text = "Документ между Клиентом 'sweetslatintely, под LIMITED HONTON COMPLETED PARTIES', и ComposeDions. Документ как и Marker и сказал.\n\n" +
+                                "СТОРОНЫ, это пользователи клиента remeralities of no-imbarked советы и его личное вероятно относятся к концу подать под это theucciment.",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                        lineHeight = 24.sp
                     )
                 }
             }
+            
+            Spacer(modifier = Modifier.height(24.dp))
+            
+            // Optional Buttons Section
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                FilledTonalButton(
+                    onClick = { },
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(56.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.filledTonalButtonColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    )
+                ) {
+                    Icon(
+                        Icons.Default.Share,
+                        contentDescription = null,
+                        modifier = Modifier.size(22.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        "Share",
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 16.sp
+                    )
+                }
+                
+                FilledTonalButton(
+                    onClick = { },
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(56.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.filledTonalButtonColors(
+                        containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+                    )
+                ) {
+                    Icon(
+                        Icons.Default.Edit,
+                        contentDescription = null,
+                        modifier = Modifier.size(22.dp)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        "Edit",
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 16.sp
+                    )
+                }
+            }
+            
+            Spacer(modifier = Modifier.height(32.dp))
         }
     }
 }
 
-// Обновляем TemplateScreen для добавления новой вкладки
+// Keep existing TemplateScreen and other functions
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TemplateScreen() {
@@ -471,7 +363,6 @@ fun TemplateScreen() {
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            // Tabs
             TabRow(selectedTabIndex = selectedTab) {
                 tabs.forEachIndexed { index, title ->
                     Tab(
@@ -482,7 +373,6 @@ fun TemplateScreen() {
                 }
             }
             
-            // Content
             when (selectedTab) {
                 0 -> CardsDemo()
                 1 -> ButtonsDemo()
