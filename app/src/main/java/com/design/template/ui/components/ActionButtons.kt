@@ -7,6 +7,7 @@ import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.design.template.ui.theme.Dimens
 import com.design.template.ui.theme.customColors
@@ -26,7 +27,7 @@ fun ActionButton(
     modifier: Modifier = Modifier
 ) {
     val isDanger = type == ActionType.DELETE
-    val customColors = MaterialTheme.customColors
+    val isGpt = type == ActionType.GPT
     
     val icon = when (type) {
         ActionType.GPT -> Icons.Outlined.AutoAwesome
@@ -36,40 +37,44 @@ fun ActionButton(
         ActionType.DELETE -> Icons.Outlined.Delete
     }
     
-    val containerColor = if (isDanger) {
-        MaterialTheme.colorScheme.errorContainer
+    if (isGpt) {
+        Button(
+            onClick = onClick,
+            modifier = modifier.size(Dimens.actionButtonSize),
+            shape = MaterialTheme.shapes.extraSmall,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary
+            ),
+            contentPadding = PaddingValues(0.dp)
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = type.name,
+                modifier = Modifier.size(Dimens.actionIconSize)
+            )
+        }
     } else {
-        customColors.chipBg
-    }
-    
-    val contentColor = if (isDanger) {
-        MaterialTheme.colorScheme.error
-    } else {
-        MaterialTheme.colorScheme.onSurface
-    }
-    
-    val borderColor = if (isDanger) {
-        MaterialTheme.colorScheme.error.copy(alpha = 0.3f)
-    } else {
-        MaterialTheme.colorScheme.outline
-    }
-    
-    OutlinedButton(
-        onClick = onClick,
-        modifier = modifier.size(Dimens.actionButtonSize),
-        shape = MaterialTheme.shapes.extraSmall,
-        colors = ButtonDefaults.outlinedButtonColors(
-            containerColor = containerColor,
-            contentColor = contentColor
-        ),
-        border = BorderStroke(Dimens.borderWidth, borderColor),
-        contentPadding = PaddingValues(0.dp)
-    ) {
-        Icon(
-            imageVector = icon,
-            contentDescription = type.name,
-            modifier = Modifier.size(Dimens.actionIconSize)
-        )
+        OutlinedButton(
+            onClick = onClick,
+            modifier = modifier.size(Dimens.actionButtonSize),
+            shape = MaterialTheme.shapes.extraSmall,
+            colors = ButtonDefaults.outlinedButtonColors(
+                containerColor = if (isDanger) MaterialTheme.colorScheme.errorContainer else Color.Transparent,
+                contentColor = if (isDanger) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurface
+            ),
+            border = BorderStroke(
+                Dimens.borderWidth,
+                if (isDanger) MaterialTheme.colorScheme.error.copy(alpha = 0.3f) else MaterialTheme.colorScheme.outline
+            ),
+            contentPadding = PaddingValues(0.dp)
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = type.name,
+                modifier = Modifier.size(Dimens.actionIconSize)
+            )
+        }
     }
 }
 
