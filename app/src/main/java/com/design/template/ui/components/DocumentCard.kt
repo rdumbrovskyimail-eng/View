@@ -86,3 +86,58 @@ fun DocumentImageCard(
         }
     }
 }
+
+@Composable
+fun DocumentBlock(
+    imageBitmap: ImageBitmap?,
+    imageUrl: String? = null,
+    isLoading: Boolean = false,
+    scannedText: String,
+    translatedText: String,
+    onGptClick: () -> Unit,
+    onCopyClick: () -> Unit,
+    onPasteClick: () -> Unit,
+    onShareClick: () -> Unit,
+    onDeleteClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier.fillMaxWidth()) {
+        // Image + Scanned Text
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(Dimens.spaceSmall)
+        ) {
+            DocumentImageCard(
+                imageBitmap = imageBitmap,
+                imageUrl = imageUrl,
+                isLoading = isLoading
+            )
+            
+            ScannedTextCard(
+                text = scannedText,
+                onGptClick = onGptClick,
+                onCopyClick = onCopyClick,
+                onPasteClick = onPasteClick,
+                onShareClick = onShareClick,
+                modifier = Modifier.weight(1f)
+            )
+        }
+        
+        // Divider
+        HorizontalDivider(
+            modifier = Modifier.padding(vertical = Dimens.dividerMargin),
+            thickness = Dimens.dividerHeight,
+            color = MaterialTheme.customColors.divider
+        )
+        
+        // Translated Text
+        TranslatedTextCard(
+            text = translatedText,
+            onDeleteClick = onDeleteClick,
+            onGptClick = onGptClick,
+            onCopyClick = onCopyClick,
+            onPasteClick = onPasteClick,
+            onShareClick = onShareClick
+        )
+    }
+}
