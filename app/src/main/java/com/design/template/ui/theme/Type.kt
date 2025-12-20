@@ -8,30 +8,30 @@ import androidx.compose.ui.unit.sp
 val AppTypography = Typography(
 
     titleLarge = TextStyle(
-        fontSize = 20.sp,
-        fontWeight = FontWeight.SemiBold,
+        fontSize = 22.sp,                // Чуть больше для элегантности
+        fontWeight = FontWeight.Medium,
         letterSpacing = 0.15.sp
     ),
 
     titleSmall = TextStyle(
-        fontSize = 13.sp,
-        fontWeight = FontWeight.SemiBold,
+        fontSize = 14.sp,
+        fontWeight = FontWeight.Medium,
         letterSpacing = 0.5.sp
     ),
 
     bodySmall = TextStyle(
-        fontSize = 12.sp,
-        lineHeight = 16.sp
+        fontSize = 13.sp,
+        lineHeight = 18.sp               // Больше пространства для читаемости
     ),
 
     labelLarge = TextStyle(
-        fontSize = 14.sp,
+        fontSize = 15.sp,
         fontWeight = FontWeight.Medium
     ),
 
     labelSmall = TextStyle(
-        fontSize = 9.sp,
-        fontWeight = FontWeight.SemiBold,
+        fontSize = 10.sp,
+        fontWeight = FontWeight.Medium,
         letterSpacing = 0.5.sp
     )
 )
