@@ -50,7 +50,6 @@ fun AddDocumentFAB(
                     .fillMaxWidth()
                     .padding(Dimens.bottomSheetPadding)
             ) {
-                // Handle
                 Box(
                     modifier = Modifier
                         .width(Dimens.bottomSheetHandleWidth)
@@ -69,7 +68,6 @@ fun AddDocumentFAB(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-                    // Camera Button
                     OutlinedButton(
                         onClick = {
                             onCameraClick()
@@ -103,7 +101,6 @@ fun AddDocumentFAB(
                         }
                     }
                     
-                    // Gallery Button
                     OutlinedButton(
                         onClick = {
                             onGalleryClick()
