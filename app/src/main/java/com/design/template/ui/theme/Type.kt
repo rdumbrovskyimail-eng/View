@@ -1,4 +1,4 @@
-package com.yourapp.ui.theme
+package com.design.template.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
@@ -6,7 +6,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.yourapp.R
+import com.design.template.R
 
 // Загрузка шрифта Inter (добавьте шрифты в res/font/)
 // Можете заменить на любой из: Inter, Manrope, Space Grotesk, Plus Jakarta Sans
