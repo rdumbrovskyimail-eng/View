@@ -1,0 +1,54 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    
+    - name: Setup Gradle
+      run: |
+        gradle wrapper --gradle-version 9.2.1
+        chmod +x gradlew
+    
+    - name: Clean build
+      run: ./gradlew clean
+        
+    - name: Build Debug APK
+      run: ./gradlew assembleDebug --stacktrace
+      
+    - name: Get commit info
+      id: commit
+      run: |
+        echo "short_sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+        echo "date=$(date +'%Y%m%d-%H%M')" >> $GITHUB_OUTPUT
+        
+    - name: Create Release
+      uses: softprops/action-gh-release@v2
+      with:
+        tag_name: build-${{ steps.commit.outputs.date }}
+        name: Build ${{ steps.commit.outputs.short_sha }}
+        body: |
+          🎨 Design Template Build
+          📱 Commit: ${{ github.event.head_commit.message }}
+          👤 Author: ${{ github.actor }}
+          🕐 Time: ${{ steps.commit.outputs.date }}
+        files: app/build/outputs/apk/debug/*.apk
+        draft: false
+        prerelease: true
