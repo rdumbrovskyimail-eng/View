@@ -1,4 +1,4 @@
-package com.yourapp
+package com.design.template
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
