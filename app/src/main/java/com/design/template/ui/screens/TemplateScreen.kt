@@ -4,6 +4,7 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape // FIXED: Added import
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -13,6 +14,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha // FIXED: Added import
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
@@ -31,15 +33,12 @@ private const val A4_ASPECT_RATIO = 1f / 1.414f
 
 @Composable
 fun TemplateScreen() {
-    // В реальном приложении данные приходят из ViewModel
     DocumentViewerScreen()
 }
 
 @Composable
 fun DocumentViewerScreen() {
     val scrollState = rememberScrollState()
-    
-    // Поднимаем состояние (State Hoisting)
     var isTranslating by remember { mutableStateOf(false) }
 
     Column(
@@ -60,7 +59,6 @@ fun DocumentViewerScreen() {
         
         Spacer(modifier = Modifier.height(1.dp))
         
-        // Основной контент (Сплит вид)
         SplitDocumentContent(
             imageUrl = "https://picsum.photos/seed/document/1000/1414",
             originalText = "The document between the Client 'sweetslatintely, beneath the LIMITED HONTON COMPLETED PARTIES', and ComposeDions.\n\nPARTIES, this users the client's remeralities..."
@@ -69,7 +67,6 @@ fun DocumentViewerScreen() {
         AppDivider()
         Spacer(modifier = Modifier.height(1.dp))
         
-        // Секция перевода
         TranslationSection(
             isTranslating = isTranslating,
             translatedText = "Документ между Клиентом 'sweetslatintely, под LIMITED HONTON COMPLETED PARTIES', и ComposeDions.\n\nСТОРОНЫ, это пользователи клиента remeralities...",
@@ -148,7 +145,7 @@ private fun SplitDocumentContent(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(IntrinsicSize.Min), // Важно: выравнивает высоту колонок
+            .height(IntrinsicSize.Min),
         horizontalArrangement = Arrangement.spacedBy(1.dp)
     ) {
         // Left: Image Viewer
@@ -171,7 +168,6 @@ private fun SplitDocumentContent(
                 }
             )
             
-            // Вертикальный разделитель справа
             VerticalDivider(
                 modifier = Modifier.align(Alignment.CenterEnd),
                 color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)
@@ -182,10 +178,9 @@ private fun SplitDocumentContent(
         Column(
             modifier = Modifier
                 .weight(0.5f)
-                .fillMaxHeight() // Заполняет высоту, заданную картинкой
+                .fillMaxHeight()
                 .background(MaterialTheme.colorScheme.surface)
         ) {
-            // Text Area
             Column(
                 modifier = Modifier
                     .weight(1f)
@@ -210,11 +205,10 @@ private fun SplitDocumentContent(
             
             AppDivider()
             
-            // Context Actions
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(48.dp), // Фиксированная высота для кнопок
+                    .height(48.dp),
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -234,13 +228,11 @@ private fun TranslationSection(
     onDeleteClick: () -> Unit,
     onActionClick: () -> Unit
 ) {
-    // Используем Surface для лучшего визуального выделения блока
     Surface(
         modifier = Modifier.fillMaxWidth(),
         color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.5f)
     ) {
         Column {
-            // Header
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -261,12 +253,11 @@ private fun TranslationSection(
                 )
             }
             
-            // Content
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 12.dp, vertical = 8.dp)
-                    .heightIn(min = 100.dp) // Минимальная высота для эстетики
+                    .heightIn(min = 100.dp)
             ) {
                 if (isTranslating) {
                     TranslatingAnimation()
@@ -283,7 +274,6 @@ private fun TranslationSection(
             
             AppDivider()
             
-            // Bottom Toolbar
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -331,7 +321,6 @@ private fun ActionIcon(
     contentDesc: String,
     onClick: () -> Unit = {}
 ) {
-    // Используем IconButton для правильного Ripple эффекта
     IconButton(
         onClick = onClick,
         modifier = Modifier.size(32.dp)
@@ -375,16 +364,16 @@ private fun TranslatingAnimation() {
     )
     
     Row(
-        modifier = Modifier.fillMaxSize(), // Заполняет доступное место
-        horizontalArrangement = Arrangement.Center, // Центрируем
+        modifier = Modifier.fillMaxSize(),
+        horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
         repeat(3) { 
             Box(
                 modifier = Modifier
                     .size(6.dp)
-                    .alpha(if (it % 2 == 0) alpha else 1f - alpha)
-                    .background(MaterialTheme.colorScheme.primary, CircleShape)
+                    .alpha(if (it % 2 == 0) alpha else 1f - alpha) // This requires 'androidx.compose.ui.draw.alpha'
+                    .background(MaterialTheme.colorScheme.primary, CircleShape) // This requires 'androidx.compose.foundation.shape.CircleShape'
             )
             Spacer(modifier = Modifier.width(4.dp))
         }
