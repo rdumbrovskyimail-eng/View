@@ -49,7 +49,6 @@ fun DocumentEditorScreen(
     Scaffold(
         topBar = {
             Column {
-                // Status Bar (placeholder)
                 Surface(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -70,10 +69,10 @@ fun DocumentEditorScreen(
                     }
                 }
                 
-                // Top App Bar
                 Surface(
                     modifier = Modifier.fillMaxWidth(),
-                    color = customColors.cardBg
+                    color = customColors.cardBg,
+                    shadowElevation = 4.dp
                 ) {
                     Row(
                         modifier = Modifier
@@ -131,7 +130,6 @@ fun DocumentEditorScreen(
                 .padding(horizontal = Dimens.spaceSmall),
             verticalArrangement = Arrangement.spacedBy(Dimens.spaceMedium)
         ) {
-            // Document Header
             item {
                 Column(
                     modifier = Modifier
@@ -158,7 +156,6 @@ fun DocumentEditorScreen(
                 }
             }
             
-            // Document Blocks
             items(documents) { doc ->
                 DocumentBlock(
                     imageBitmap = doc.imageBitmap,
@@ -174,7 +171,6 @@ fun DocumentEditorScreen(
                 )
             }
             
-            // Bottom padding для FAB
             item {
                 Spacer(modifier = Modifier.height(80.dp))
             }
