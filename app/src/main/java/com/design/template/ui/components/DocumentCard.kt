@@ -1,6 +1,5 @@
 package com.design.template.ui.components
 
-import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -10,9 +9,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.yourapp.ui.theme.Dimens
-import com.yourapp.ui.theme.customColors
+import com.design.template.ui.theme.Dimens
+import com.design.template.ui.theme.customColors
 
 @Composable
 fun DocumentImageCard(
@@ -84,60 +84,5 @@ fun DocumentImageCard(
                 }
             }
         }
-    }
-}
-
-@Composable
-fun DocumentBlock(
-    imageBitmap: ImageBitmap?,
-    imageUrl: String? = null,
-    isLoading: Boolean = false,
-    scannedText: String,
-    translatedText: String,
-    onGptClick: () -> Unit,
-    onCopyClick: () -> Unit,
-    onPasteClick: () -> Unit,
-    onShareClick: () -> Unit,
-    onDeleteClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Column(modifier = modifier.fillMaxWidth()) {
-        // Image + Scanned Text
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(Dimens.spaceSmall)
-        ) {
-            DocumentImageCard(
-                imageBitmap = imageBitmap,
-                imageUrl = imageUrl,
-                isLoading = isLoading
-            )
-            
-            ScannedTextCard(
-                text = scannedText,
-                onGptClick = onGptClick,
-                onCopyClick = onCopyClick,
-                onPasteClick = onPasteClick,
-                onShareClick = onShareClick,
-                modifier = Modifier.weight(1f)
-            )
-        }
-        
-        // Divider
-        HorizontalDivider(
-            modifier = Modifier.padding(vertical = Dimens.dividerMargin),
-            thickness = Dimens.dividerHeight,
-            color = MaterialTheme.customColors.divider
-        )
-        
-        // Translated Text
-        TranslatedTextCard(
-            text = translatedText,
-            onDeleteClick = onDeleteClick,
-            onGptClick = onGptClick,
-            onCopyClick = onCopyClick,
-            onPasteClick = onPasteClick,
-            onShareClick = onShareClick
-        )
     }
 }
