@@ -2,15 +2,15 @@ package com.design.template.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-// Light
-val Primary = Color(0xFF2563EB)          // спокойный синий
+// Light (адаптировано под Grok: минималистичные, светлые тона с акцентом на синий/серый)
+val Primary = Color(0xFF64748B)          // Спокойный серо-синий как в Grok
 val OnPrimary = Color.White
-val PrimaryContainer = Color(0xFFDDE7FF)
+val PrimaryContainer = Color(0xFFE2E8F0)
 
-val Secondary = Color(0xFF64748B)
-val SecondaryContainer = Color(0xFFE2E8F0)
+val Secondary = Color(0xFF2563EB)
+val SecondaryContainer = Color(0xFFDDE7FF)
 
-val Background = Color(0xFFF8FAFC)
+val Background = Color(0xFFF8FAFC)       // Светлый фон Grok
 val Surface = Color(0xFFFFFFFF)
 val SurfaceVariant = Color(0xFFF1F5F9)
 val SurfaceContainer = Color(0xFFF8FAFC)
@@ -23,7 +23,7 @@ val OutlineVariant = Color(0xFFE2E8F0)
 
 val Error = Color(0xFFDC2626)
 
-// Dark
+// Dark (для опциональной тёмной темы, но фокус на светлой как в Grok)
 val DarkPrimary = Color(0xFF93C5FD)
 val DarkBackground = Color(0xFF020617)
 val DarkSurface = Color(0xFF020617)
