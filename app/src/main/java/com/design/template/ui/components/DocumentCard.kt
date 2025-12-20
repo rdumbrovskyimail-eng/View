@@ -1,4 +1,4 @@
-package com.yourapp.ui.components
+package com.design.template.ui.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
