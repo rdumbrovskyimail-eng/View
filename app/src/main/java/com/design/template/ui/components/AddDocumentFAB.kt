@@ -1,4 +1,4 @@
-package com.yourapp.ui.components
+package com.design.template.ui.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
