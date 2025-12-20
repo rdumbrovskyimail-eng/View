@@ -1,37 +1,67 @@
-package com.design.template.ui.theme
+package com.yourapp.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.yourapp.R
+
+// Загрузка шрифта Inter (добавьте шрифты в res/font/)
+// Можете заменить на любой из: Inter, Manrope, Space Grotesk, Plus Jakarta Sans
+val InterFontFamily = FontFamily(
+    Font(R.font.inter_regular, FontWeight.Normal),
+    Font(R.font.inter_medium, FontWeight.Medium),
+    Font(R.font.inter_semibold, FontWeight.SemiBold),
+    Font(R.font.inter_bold, FontWeight.Bold)
+)
 
 val AppTypography = Typography(
-
-    titleLarge = TextStyle(
-        fontSize = 22.sp,                // Чуть больше для элегантности
-        fontWeight = FontWeight.Medium,
-        letterSpacing = 0.15.sp
-    ),
-
-    titleSmall = TextStyle(
+    // Название папки в TopBar
+    titleMedium = TextStyle(
+        fontFamily = InterFontFamily,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 14.sp,
-        fontWeight = FontWeight.Medium,
-        letterSpacing = 0.5.sp
+        letterSpacing = (-0.2).sp
     ),
-
+    
+    // Название документа (жирное, 18-20sp)
+    titleLarge = TextStyle(
+        fontFamily = InterFontFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = 18.sp,
+        letterSpacing = (-0.3).sp
+    ),
+    
+    // Описание документа
+    bodyMedium = TextStyle(
+        fontFamily = InterFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp,
+        lineHeight = 16.sp
+    ),
+    
+    // Текст в полях (scanned/translated)
     bodySmall = TextStyle(
-        fontSize = 13.sp,
-        lineHeight = 18.sp               // Больше пространства для читаемости
+        fontFamily = InterFontFamily,
+        fontWeight = FontWeight.Normal,
+        fontSize = 12.sp,
+        lineHeight = 17.sp
     ),
-
-    labelLarge = TextStyle(
-        fontSize = 15.sp,
-        fontWeight = FontWeight.Medium
-    ),
-
+    
+    // Label для "TRANSLATED TEXT"
     labelSmall = TextStyle(
+        fontFamily = InterFontFamily,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 10.sp,
-        fontWeight = FontWeight.Medium,
-        letterSpacing = 0.5.sp
+        letterSpacing = 0.8.sp
+    ),
+    
+    // Кнопки в Bottom Sheet
+    labelMedium = TextStyle(
+        fontFamily = InterFontFamily,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 11.sp
     )
 )
