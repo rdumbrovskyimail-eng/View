@@ -1,4 +1,5 @@
-package com.yourapp.ui.screens
+package com.design.template.ui.screens
+
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
