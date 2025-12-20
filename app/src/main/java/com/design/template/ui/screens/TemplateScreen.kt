@@ -4,8 +4,7 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape // FIXED: Added import
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -14,27 +13,24 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha // FIXED: Added import
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.SubcomposeAsyncImage
 
-// --- Constants ---
-private const val A4_ASPECT_RATIO = 1f / 1.414f
+/* ENTRY */
 
 @Composable
 fun TemplateScreen() {
     DocumentViewerScreen()
 }
+
+/* SCREEN */
 
 @Composable
 fun DocumentViewerScreen() {
@@ -48,286 +44,270 @@ fun DocumentViewerScreen() {
             .statusBarsPadding()
             .verticalScroll(scrollState)
     ) {
-        FolderTopBar(folderName = "НАЗВАНИЕ ПАПКИ")
-        
-        AppDivider()
-        
-        DocumentHeader(
-            title = "НАЗВАНИЕ ДОКУМЕНТА",
-            description = "ОПИСАНИЕ ДОКУМЕНТА"
-        )
-        
-        Spacer(modifier = Modifier.height(1.dp))
-        
-        SplitDocumentContent(
-            imageUrl = "https://picsum.photos/seed/document/1000/1414",
-            originalText = "The document between the Client 'sweetslatintely, beneath the LIMITED HONTON COMPLETED PARTIES', and ComposeDions.\n\nPARTIES, this users the client's remeralities..."
-        )
-        
-        AppDivider()
-        Spacer(modifier = Modifier.height(1.dp))
-        
-        TranslationSection(
-            isTranslating = isTranslating,
-            translatedText = "Документ между Клиентом 'sweetslatintely, под LIMITED HONTON COMPLETED PARTIES', и ComposeDions.\n\nСТОРОНЫ, это пользователи клиента remeralities...",
-            onDeleteClick = { /* Logic */ },
-            onActionClick = { /* Logic */ }
-        )
-        
+
+        TopFolderBar()
+        DocumentHeader()
+        DocumentDescription()
+        MainDocumentContent()
+        TranslateSection(isTranslating)
+
         Spacer(modifier = Modifier.height(16.dp))
     }
 }
 
-// --- Composable Components ---
+/* TOP BAR */
 
 @Composable
-private fun FolderTopBar(folderName: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surface)
-            .padding(horizontal = 12.dp, vertical = 10.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-            contentDescription = "Back",
-            tint = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.size(22.dp)
-        )
-        Spacer(modifier = Modifier.width(8.dp))
+private fun TopFolderBar() {
+    Surface(tonalElevation = 1.dp) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp, vertical = 10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = null,
+                modifier = Modifier.size(22.dp),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Spacer(Modifier.width(8.dp))
+            Text(
+                text = "НАЗВАНИЕ ПАПКИ",
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
+    SoftDivider()
+}
+
+/* HEADER */
+
+@Composable
+private fun DocumentHeader() {
+    Surface {
         Text(
-            text = folderName,
-            style = MaterialTheme.typography.bodyMedium.copy(
-                fontWeight = FontWeight.Medium,
-                letterSpacing = 0.1.sp
-            ),
+            text = "НАЗВАНИЕ ДОКУМЕНТА",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 14.dp),
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.SemiBold
+        )
+    }
+    SoftDivider(alpha = 0.2f)
+}
+
+/* DESCRIPTION */
+
+@Composable
+private fun DocumentDescription() {
+    Surface {
+        Text(
+            text = "ОПИСАНИЕ ДОКУМЕНТА",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 10.dp),
+            style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }
 
-@Composable
-private fun DocumentHeader(title: String, description: String) {
-    Column(modifier = Modifier.background(MaterialTheme.colorScheme.surface)) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleLarge.copy(
-                fontWeight = FontWeight.Bold,
-                letterSpacing = 0.15.sp
-            ),
-            color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 14.dp)
-        )
-        
-        AppDivider(alpha = 0.2f)
-        
-        Text(
-            text = description,
-            style = MaterialTheme.typography.bodySmall.copy(
-                letterSpacing = 0.25.sp
-            ),
-            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp, vertical = 10.dp)
-        )
-    }
-}
+/* MAIN CONTENT */
 
 @Composable
-private fun SplitDocumentContent(
-    imageUrl: String,
-    originalText: String
-) {
+private fun MainDocumentContent() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(IntrinsicSize.Min),
+            .padding(horizontal = 1.dp),
         horizontalArrangement = Arrangement.spacedBy(1.dp)
     ) {
-        // Left: Image Viewer
-        Box(
+
+        // IMAGE
+        Surface(
             modifier = Modifier
                 .weight(0.5f)
-                .aspectRatio(A4_ASPECT_RATIO)
-                .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f))
+                .aspectRatio(1f / 1.414f),
+            tonalElevation = 1.dp
         ) {
             SubcomposeAsyncImage(
-                model = imageUrl,
-                contentDescription = "Document Scan",
-                modifier = Modifier.fillMaxSize(),
+                model = "https://picsum.photos/seed/document/1000/1414",
+                contentDescription = null,
                 contentScale = ContentScale.Crop,
-                loading = { LoadingImagePlaceholder() },
-                error = { 
-                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        Icon(Icons.Outlined.BrokenImage, null)
-                    }
-                }
-            )
-            
-            VerticalDivider(
-                modifier = Modifier.align(Alignment.CenterEnd),
-                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)
+                loading = { LoadingImagePlaceholder() }
             )
         }
-        
-        // Right: Text & Actions
-        Column(
+
+        // TEXT
+        Surface(
             modifier = Modifier
                 .weight(0.5f)
-                .fillMaxHeight()
-                .background(MaterialTheme.colorScheme.surface)
+                .aspectRatio(1f / 1.414f),
+            tonalElevation = 1.dp
         ) {
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(10.dp)
-                    .verticalScroll(rememberScrollState())
-            ) {
-                Text(
-                    text = "ОРИГИНАЛЬНЫЙ ТЕКСТ",
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.primary,
-                    fontWeight = FontWeight.SemiBold
+            Column {
+                OriginalTextBlock(
+                    modifier = Modifier.weight(0.9f)
                 )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = originalText,
-                    style = MaterialTheme.typography.bodySmall.copy(
-                        lineHeight = 16.sp
-                    ),
-                    color = MaterialTheme.colorScheme.onSurface
+                SoftDivider()
+                ActionButtonsRow(
+                    modifier = Modifier.weight(0.1f)
                 )
-            }
-            
-            AppDivider()
-            
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                ActionIcon(Icons.Outlined.AutoAwesome, "AI")
-                ActionIcon(Icons.Outlined.ContentCopy, "Copy")
-                ActionIcon(Icons.Outlined.ContentPaste, "Paste")
-                ActionIcon(Icons.Outlined.Share, "Share")
             }
         }
     }
+    SoftDivider()
 }
 
+/* ORIGINAL TEXT */
+
 @Composable
-private fun TranslationSection(
-    isTranslating: Boolean,
-    translatedText: String,
-    onDeleteClick: () -> Unit,
-    onActionClick: () -> Unit
-) {
-    Surface(
-        modifier = Modifier.fillMaxWidth(),
-        color = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.5f)
+private fun OriginalTextBlock(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(10.dp)
+            .verticalScroll(rememberScrollState())
     ) {
-        Column {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 12.dp, vertical = 10.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Translate,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(20.dp)
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "TRANSLATE TEXT",
-                    style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-            }
-            
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 12.dp, vertical = 8.dp)
-                    .heightIn(min = 100.dp)
-            ) {
-                if (isTranslating) {
-                    TranslatingAnimation()
-                } else {
-                    Text(
-                        text = translatedText,
-                        style = MaterialTheme.typography.bodySmall.copy(
-                            lineHeight = 16.sp
-                        ),
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-            }
-            
-            AppDivider()
-            
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(MaterialTheme.colorScheme.surface)
-                    .padding(8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(
-                    onClick = onDeleteClick,
-                    modifier = Modifier.size(32.dp)
+        Text(
+            text = "ORIGINAL TEXT",
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.primary
+        )
+        Spacer(Modifier.height(8.dp))
+        Text(
+            text = "The document between the Client 'sweetslatintely, beneath the LIMITED HONTON COMPLETED PARTIES', and ComposeDions...",
+            style = MaterialTheme.typography.bodySmall,
+            lineHeight = 16.sp
+        )
+    }
+}
+
+/* ACTION BUTTONS */
+
+@Composable
+private fun ActionButtonsRow(modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 6.dp),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        MiniActionButton(Icons.Outlined.AutoAwesome)
+        MiniActionButton(Icons.Outlined.ContentCopy)
+        MiniActionButton(Icons.Outlined.ContentPaste)
+        MiniActionButton(Icons.Outlined.Share)
+    }
+}
+
+/* TRANSLATE SECTION */
+
+@Composable
+private fun TranslateSection(isTranslating: Boolean) {
+    BoxWithConstraints(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 1.dp)
+    ) {
+        val imageHeight = maxWidth * 0.5f * 1.414f
+
+        Surface(
+            modifier = Modifier.heightIn(min = imageHeight * 0.25f),
+            tonalElevation = 1.dp
+        ) {
+            Column {
+
+                TranslateHeader()
+
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(12.dp),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Icon(
-                        imageVector = Icons.Outlined.DeleteOutline,
-                        contentDescription = "Delete",
-                        tint = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.size(20.dp)
+                    if (isTranslating) TranslatingAnimation()
+                    else Text(
+                        text = "Переведённый текст документа...",
+                        style = MaterialTheme.typography.bodySmall,
+                        lineHeight = 16.sp
                     )
                 }
-                
-                Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                    ActionIcon(Icons.Outlined.AutoAwesome, "AI", onClick = onActionClick)
-                    ActionIcon(Icons.Outlined.ContentCopy, "Copy", onClick = onActionClick)
-                    ActionIcon(Icons.Outlined.ContentPaste, "Paste", onClick = onActionClick)
-                    ActionIcon(Icons.Outlined.Share, "Share", onClick = onActionClick)
-                }
+
+                SoftDivider()
+
+                TranslateBottomBar()
             }
         }
     }
 }
 
-// --- UI Helpers ---
+/* TRANSLATE HEADER */
 
 @Composable
-private fun AppDivider(alpha: Float = 0.3f) {
-    HorizontalDivider(
-        thickness = 1.dp,
-        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = alpha)
-    )
-}
-
-@Composable
-private fun ActionIcon(
-    icon: ImageVector,
-    contentDesc: String,
-    onClick: () -> Unit = {}
-) {
-    IconButton(
-        onClick = onClick,
-        modifier = Modifier.size(32.dp)
+private fun TranslateHeader() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 12.dp, vertical = 10.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            imageVector = icon,
-            contentDescription = contentDesc,
+            Icons.Outlined.Translate,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(20.dp)
+        )
+        Spacer(Modifier.width(8.dp))
+        Text(
+            text = "TRANSLATE TEXT",
+            style = MaterialTheme.typography.titleSmall,
+            fontWeight = FontWeight.SemiBold
+        )
+    }
+}
+
+/* TRANSLATE BOTTOM */
+
+@Composable
+private fun TranslateBottomBar() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
+        IconButton(onClick = {}, modifier = Modifier.size(32.dp)) {
+            Icon(
+                Icons.Outlined.DeleteOutline,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.error
+            )
+        }
+
+        Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+            MiniActionButton(Icons.Outlined.AutoAwesome)
+            MiniActionButton(Icons.Outlined.ContentCopy)
+            MiniActionButton(Icons.Outlined.ContentPaste)
+            MiniActionButton(Icons.Outlined.Share)
+        }
+    }
+}
+
+/* COMPONENTS */
+
+@Composable
+private fun MiniActionButton(icon: androidx.compose.ui.graphics.vector.ImageVector) {
+    IconButton(onClick = {}, modifier = Modifier.size(32.dp)) {
+        Icon(
+            icon,
+            contentDescription = null,
             modifier = Modifier.size(18.dp),
             tint = MaterialTheme.colorScheme.primary
         )
@@ -335,47 +315,79 @@ private fun ActionIcon(
 }
 
 @Composable
+private fun SoftDivider(alpha: Float = 0.3f) {
+    HorizontalDivider(
+        thickness = 1.dp,
+        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = alpha)
+    )
+}
+
+/* LOADING IMAGE */
+
+@Composable
 private fun LoadingImagePlaceholder() {
     val infiniteTransition = rememberInfiniteTransition(label = "loading")
+
     val alpha by infiniteTransition.animateFloat(
-        initialValue = 0.3f, targetValue = 0.6f,
-        animationSpec = infiniteRepeatable(tween(1000), RepeatMode.Reverse), label = "alpha"
+        0.3f, 0.7f,
+        infiniteRepeatable(tween(1000), RepeatMode.Reverse),
+        label = "alpha"
     )
-    
+
+    val scale by infiniteTransition.animateFloat(
+        0.95f, 1.05f,
+        infiniteRepeatable(tween(1500), RepeatMode.Reverse),
+        label = "scale"
+    )
+
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = alpha)),
+            .background(
+                Brush.verticalGradient(
+                    listOf(
+                        MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.2f),
+                        MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.2f)
+                    )
+                )
+            ),
         contentAlignment = Alignment.Center
     ) {
         Icon(
-            Icons.Outlined.Image, null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+            Icons.Outlined.Image,
+            contentDescription = null,
+            modifier = Modifier
+                .size(48.dp)
+                .scale(scale)
+                .alpha(alpha),
+            tint = MaterialTheme.colorScheme.primary
         )
     }
 }
 
+/* TRANSLATING ANIMATION */
+
 @Composable
 private fun TranslatingAnimation() {
-    val transition = rememberInfiniteTransition(label = "dots")
-    val alpha by transition.animateFloat(
-        initialValue = 0.2f, targetValue = 1f,
-        animationSpec = infiniteRepeatable(tween(600), RepeatMode.Reverse), label = "alpha"
+    val infiniteTransition = rememberInfiniteTransition(label = "dots")
+
+    val alpha by infiniteTransition.animateFloat(
+        0.4f, 1f,
+        infiniteRepeatable(tween(800), RepeatMode.Reverse),
+        label = "alpha"
     )
-    
-    Row(
-        modifier = Modifier.fillMaxSize(),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        repeat(3) { 
+
+    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+        repeat(3) {
             Box(
                 modifier = Modifier
-                    .size(6.dp)
-                    .alpha(if (it % 2 == 0) alpha else 1f - alpha) // This requires 'androidx.compose.ui.draw.alpha'
-                    .background(MaterialTheme.colorScheme.primary, CircleShape) // This requires 'androidx.compose.foundation.shape.CircleShape'
+                    .size(8.dp)
+                    .alpha(alpha)
+                    .background(
+                        MaterialTheme.colorScheme.primary,
+                        CircleShape
+                    )
             )
-            Spacer(modifier = Modifier.width(4.dp))
         }
     }
 }
