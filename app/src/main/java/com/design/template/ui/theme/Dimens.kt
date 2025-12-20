@@ -1,4 +1,4 @@
-package com.yourapp.ui.theme
+package com.design.template.ui.theme
 
 import androidx.compose.ui.unit.dp
 
