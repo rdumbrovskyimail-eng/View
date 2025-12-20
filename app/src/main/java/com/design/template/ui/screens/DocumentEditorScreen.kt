@@ -1,6 +1,5 @@
 package com.design.template.ui.screens
 
-
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -13,10 +12,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.unit.dp
-import com.yourapp.ui.components.AddDocumentFAB
-import com.yourapp.ui.components.DocumentBlock
-import com.yourapp.ui.theme.Dimens
-import com.yourapp.ui.theme.customColors
+import com.design.template.ui.components.AddDocumentFAB
+import com.design.template.ui.components.DocumentBlock
+import com.design.template.ui.theme.Dimens
+import com.design.template.ui.theme.customColors
 
 data class DocumentItem(
     val id: String,
