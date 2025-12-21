@@ -28,7 +28,6 @@ fun ActionButton(
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
     
-    // Микро-анимация нажатия
     val scale by animateFloatAsState(
         targetValue = if (isPressed) 0.92f else 1f,
         animationSpec = spring(
@@ -49,7 +48,7 @@ fun ActionButton(
         ActionType.DELETE -> Icons.Outlined.Delete
     }
 
-    // GPT — выделенная кнопка с улучшенным контрастом
+    // GPT — выделенная кнопка
     if (isGpt) {
         FilledTonalButton(
             onClick = onClick,
@@ -80,7 +79,7 @@ fun ActionButton(
         return
     }
 
-    // DELETE — четкая граница с error цветом
+    // DELETE — нейтральная серая кнопка
     if (isDanger) {
         OutlinedButton(
             onClick = onClick,
@@ -92,11 +91,12 @@ fun ActionButton(
                 },
             shape = MaterialTheme.shapes.extraSmall,
             colors = ButtonDefaults.outlinedButtonColors(
-                contentColor = MaterialTheme.colorScheme.error
+                containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+                contentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
             ),
             border = BorderStroke(
                 Dimens.borderWidth,
-                MaterialTheme.colorScheme.error.copy(alpha = 0.35f)
+                MaterialTheme.colorScheme.outline.copy(alpha = 0.4f)
             ),
             contentPadding = PaddingValues(0.dp),
             interactionSource = interactionSource
@@ -110,7 +110,7 @@ fun ActionButton(
         return
     }
 
-    // Остальные кнопки — с улучшенными границами
+    // Остальные кнопки
     OutlinedButton(
         onClick = onClick,
         modifier = modifier
