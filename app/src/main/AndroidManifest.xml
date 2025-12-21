@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_LOGS" 
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
     <application
         android:name=".App"
@@ -12,7 +15,7 @@
         android:roundIcon="@android:drawable/ic_menu_gallery"
         android:supportsRtl="true"
         android:theme="@style/Theme.DesignTemplate"
-        tools:targetApi="31">
+        tools:targetApi="36">
         
         <activity
             android:name=".MainActivity"
