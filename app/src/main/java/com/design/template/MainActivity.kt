@@ -10,6 +10,8 @@ import com.design.template.ui.theme.DocumentScannerTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        android.util.Log.d("MainActivity", "MainActivity created")
 
         enableEdgeToEdge()
 
