@@ -7,7 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
@@ -45,70 +45,48 @@ fun DocumentEditorScreen(
     modifier: Modifier = Modifier
 ) {
     val customColors = MaterialTheme.customColors
-    
+
     Scaffold(
         topBar = {
-            Column {
-                Surface(
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                color = MaterialTheme.colorScheme.background,
+                shadowElevation = 0.dp
+            ) {
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(Dimens.statusBarHeight),
-                    color = MaterialTheme.colorScheme.background
+                        .height(Dimens.topBarHeight)
+                        .padding(horizontal = Dimens.topBarPadding),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(horizontal = 10.dp),
-                        contentAlignment = Alignment.CenterEnd
-                    ) {
-                        Text(
-                            text = "12:20 📶 🔋",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = customColors.textSecondary
+                    IconButton(onClick = onBackClick) {
+                        Icon(
+                            imageVector = Icons.Outlined.ArrowBack,
+                            contentDescription = "Back",
+                            modifier = Modifier.size(Dimens.topBarIconSize),
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.width(4.dp))
+
+                    Text(
+                        text = folderName,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.weight(1f)
+                    )
+
+                    IconButton(onClick = onMenuClick) {
+                        Icon(
+                            imageVector = Icons.Outlined.MoreVert,
+                            contentDescription = "Menu",
+                            modifier = Modifier.size(Dimens.topBarIconSize),
+                            tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
                 }
-                
-                Surface(
-                    modifier = Modifier.fillMaxWidth(),
-                    color = customColors.cardBg,
-                    shadowElevation = 4.dp
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(Dimens.topBarHeight)
-                            .padding(horizontal = Dimens.topBarPadding),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        IconButton(onClick = onBackClick) {
-                            Icon(
-                                imageVector = Icons.Outlined.ArrowBack,
-                                contentDescription = "Back",
-                                modifier = Modifier.size(Dimens.topBarIconSize)
-                            )
-                        }
-                        
-                        Text(
-                            text = folderName,
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                        
-                        IconButton(onClick = onMenuClick) {
-                            Icon(
-                                imageVector = Icons.Outlined.MoreVert,
-                                contentDescription = "Menu",
-                                modifier = Modifier.size(Dimens.topBarIconSize)
-                            )
-                        }
-                    }
-                }
-                
-                HorizontalDivider(
-                    thickness = Dimens.borderWidth,
-                    color = MaterialTheme.colorScheme.outline
-                )
             }
         },
         floatingActionButton = {
@@ -123,6 +101,7 @@ fun DocumentEditorScreen(
         },
         containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
+
         LazyColumn(
             modifier = modifier
                 .fillMaxSize()
@@ -130,14 +109,15 @@ fun DocumentEditorScreen(
                 .padding(horizontal = Dimens.spaceSmall),
             verticalArrangement = Arrangement.spacedBy(Dimens.spaceMedium)
         ) {
+
+            // ===== DOCUMENT HEADER =====
             item {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            start = 2.dp,
-                            top = Dimens.spaceMedium,
-                            bottom = Dimens.spaceMedium
+                            top = Dimens.spaceLarge,
+                            bottom = Dimens.spaceLarge
                         )
                 ) {
                     Text(
@@ -145,9 +125,9 @@ fun DocumentEditorScreen(
                         style = MaterialTheme.typography.titleLarge,
                         color = MaterialTheme.colorScheme.onSurface
                     )
-                    
-                    Spacer(modifier = Modifier.height(4.dp))
-                    
+
+                    Spacer(modifier = Modifier.height(6.dp))
+
                     Text(
                         text = documentDescription,
                         style = MaterialTheme.typography.bodyMedium,
@@ -155,7 +135,8 @@ fun DocumentEditorScreen(
                     )
                 }
             }
-            
+
+            // ===== DOCUMENT BLOCKS =====
             items(documents) { doc ->
                 DocumentBlock(
                     imageBitmap = doc.imageBitmap,
@@ -170,9 +151,9 @@ fun DocumentEditorScreen(
                     onDeleteClick = { onDeleteClick(doc.id) }
                 )
             }
-            
+
             item {
-                Spacer(modifier = Modifier.height(80.dp))
+                Spacer(modifier = Modifier.height(96.dp))
             }
         }
     }
