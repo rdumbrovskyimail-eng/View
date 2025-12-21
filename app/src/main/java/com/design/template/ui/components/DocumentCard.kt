@@ -2,8 +2,6 @@ package com.design.template.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.InsertDriveFile
 import androidx.compose.material3.*
@@ -43,6 +41,7 @@ fun DocumentImageCard(
                         contentScale = ContentScale.Crop
                     )
                 }
+
                 imageUrl != null -> {
                     AsyncImage(
                         model = imageUrl,
@@ -51,6 +50,7 @@ fun DocumentImageCard(
                         contentScale = ContentScale.Crop
                     )
                 }
+
                 else -> {
                     Icon(
                         imageVector = Icons.Outlined.InsertDriveFile,
@@ -65,9 +65,7 @@ fun DocumentImageCard(
 
             if (isLoading) {
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(8.dp),
+                    modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator(
@@ -112,9 +110,7 @@ fun ScannedTextCard(
                 text = text,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier
-                    .weight(1f)
-                    .verticalScroll(rememberScrollState())
+                modifier = Modifier.weight(1f)
             )
 
             Spacer(modifier = Modifier.height(Dimens.spaceSmall))
@@ -159,9 +155,7 @@ fun TranslatedTextCard(
                 text = text,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier
-                    .verticalScroll(rememberScrollState())
-                    .padding(bottom = Dimens.spaceSmall)
+                modifier = Modifier.padding(bottom = Dimens.spaceSmall)
             )
 
             ActionButtonRowWithDelete(
