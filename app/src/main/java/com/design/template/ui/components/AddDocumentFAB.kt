@@ -188,7 +188,7 @@ private fun BottomSheetOption(
             },
         shape = MaterialTheme.shapes.medium,
         colors = ButtonDefaults.outlinedButtonColors(
-            containerColor = MaterialTheme.customColors.chipBg.copy(alpha = 0.5f),
+            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
             contentColor = MaterialTheme.colorScheme.onSurface
         ),
         border = BorderStroke(
