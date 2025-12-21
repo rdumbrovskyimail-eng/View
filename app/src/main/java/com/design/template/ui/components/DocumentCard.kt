@@ -1,6 +1,7 @@
 package com.design.template.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.InsertDriveFile
@@ -9,8 +10,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -27,7 +30,12 @@ fun DocumentImageCard(
     Surface(
         modifier = modifier
             .width(Dimens.imageWidth)
-            .height(Dimens.imageHeight),
+            .height(Dimens.imageHeight)
+            .border(
+                width = 2.dp,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.15f),
+                shape = MaterialTheme.shapes.small
+            ),
         color = MaterialTheme.customColors.fieldBg,
         shape = MaterialTheme.shapes.small,
         tonalElevation = 0.dp,
@@ -58,13 +66,14 @@ fun DocumentImageCard(
                 }
 
                 else -> {
-                    Icon(
-                        imageVector = Icons.Outlined.InsertDriveFile,
+                    // Placeholder с демо-изображением
+                    AsyncImage(
+                        model = "https://picsum.photos/400/600",
                         contentDescription = "Document placeholder",
                         modifier = Modifier
-                            .size(64.dp)
-                            .align(Alignment.Center),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.12f)
+                            .fillMaxSize()
+                            .clip(MaterialTheme.shapes.small),
+                        contentScale = ContentScale.Crop
                     )
                 }
             }
@@ -116,7 +125,8 @@ fun ScannedTextCard(
             Text(
                 text = "SCANNED TEXT",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+                color = MaterialTheme.colorScheme.primary,
+                fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
@@ -152,7 +162,13 @@ fun TranslatedTextCard(
     modifier: Modifier = Modifier
 ) {
     Surface(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .border(
+                width = 2.dp,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
+                shape = MaterialTheme.shapes.small
+            ),
         color = MaterialTheme.customColors.fieldBg,
         shape = MaterialTheme.shapes.small,
         tonalElevation = 0.dp,
@@ -166,7 +182,8 @@ fun TranslatedTextCard(
             Text(
                 text = "TRANSLATED TEXT",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.error.copy(alpha = 0.75f),
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
@@ -203,13 +220,19 @@ fun DocumentBlock(
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .border(
+                width = 3.dp,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.15f),
+                shape = MaterialTheme.shapes.large
+            ),
         shape = MaterialTheme.shapes.large,
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.customColors.cardBg
         ),
         elevation = CardDefaults.cardElevation(
-            defaultElevation = 1.dp
+            defaultElevation = 0.dp
         )
     ) {
         Column(
@@ -239,8 +262,8 @@ fun DocumentBlock(
 
             HorizontalDivider(
                 modifier = Modifier.padding(vertical = Dimens.dividerMargin),
-                thickness = Dimens.dividerHeight,
-                color = MaterialTheme.customColors.divider.copy(alpha = 0.5f)
+                thickness = 2.dp,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)
             )
 
             TranslatedTextCard(
