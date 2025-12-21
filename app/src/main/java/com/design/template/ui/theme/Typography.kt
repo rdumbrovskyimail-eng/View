@@ -8,7 +8,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.design.template.R
 
-// Загрузка шрифта Inter
 val InterFontFamily = FontFamily(
     Font(R.font.inter_regular, FontWeight.Normal),
     Font(R.font.inter_medium, FontWeight.Medium),
@@ -17,50 +16,57 @@ val InterFontFamily = FontFamily(
 )
 
 val AppTypography = Typography(
-    // Название папки в TopBar
+    // TopBar title - более четкий
     titleMedium = TextStyle(
         fontFamily = InterFontFamily,
         fontWeight = FontWeight.SemiBold,
         fontSize = 14.sp,
-        letterSpacing = (-0.2).sp
+        letterSpacing = (-0.15).sp,
+        lineHeight = 20.sp
     ),
     
-    // Название документа (жирное, 18-20sp)
+    // Document title - более выразительный
     titleLarge = TextStyle(
         fontFamily = InterFontFamily,
         fontWeight = FontWeight.Bold,
-        fontSize = 18.sp,
-        letterSpacing = (-0.3).sp
+        fontSize = 20.sp,
+        letterSpacing = (-0.4).sp,
+        lineHeight = 26.sp
     ),
     
-    // Описание документа
+    // Document description - улучшенная читаемость
     bodyMedium = TextStyle(
         fontFamily = InterFontFamily,
         fontWeight = FontWeight.Normal,
-        fontSize = 12.sp,
-        lineHeight = 16.sp
+        fontSize = 13.sp,
+        lineHeight = 18.sp,
+        letterSpacing = 0.sp
     ),
     
-    // Текст в полях (scanned/translated)
+    // Scanned/Translated text - оптимальный line-height
     bodySmall = TextStyle(
         fontFamily = InterFontFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp,
-        lineHeight = 17.sp
+        lineHeight = 18.sp,
+        letterSpacing = 0.sp
     ),
     
-    // Label для "TRANSLATED TEXT"
+    // Labels - более различимые
     labelSmall = TextStyle(
         fontFamily = InterFontFamily,
         fontWeight = FontWeight.SemiBold,
         fontSize = 10.sp,
-        letterSpacing = 0.8.sp
+        letterSpacing = 1.2.sp,
+        lineHeight = 14.sp
     ),
     
-    // Кнопки в Bottom Sheet
+    // Bottom Sheet buttons - более читаемые
     labelMedium = TextStyle(
         fontFamily = InterFontFamily,
-        fontWeight = FontWeight.SemiBold,
-        fontSize = 11.sp
+        fontWeight = FontWeight.Medium,
+        fontSize = 12.sp,
+        letterSpacing = 0.1.sp,
+        lineHeight = 16.sp
     )
 )
