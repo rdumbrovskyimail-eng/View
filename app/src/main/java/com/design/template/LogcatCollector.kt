@@ -62,16 +62,14 @@ class LogcatCollector(private val context: Context) {
                     16384
                 )
                 
-                var line: String?
-                while (isActive && reader.readLine().also { line = it } != null) {
-                    line?.let { logLine ->
-                        synchronized(logBuffer) {
-                            logBuffer.append(logLine).append("\n")
-                            
-                            // Ограничиваем размер буфера
-                            if (logBuffer.length > maxBufferSize) {
-                                logBuffer.delete(0, logBuffer.length - maxBufferSize)
-                            }
+                while (isActive) {
+                    val line = reader.readLine() ?: break
+                    synchronized(logBuffer) {
+                        logBuffer.append(line).append("\n")
+                        
+                        // Ограничиваем размер буфера
+                        if (logBuffer.length > maxBufferSize) {
+                            logBuffer.delete(0, logBuffer.length - maxBufferSize)
                         }
                     }
                 }
