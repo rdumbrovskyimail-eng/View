@@ -7,7 +7,6 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-// Импортируем цвета из Color.kt
 private val LightColorScheme = lightColorScheme(
     primary = LightPrimary,
     onPrimary = Color.White,
