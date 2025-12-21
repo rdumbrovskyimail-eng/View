@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.design.template.ui.components.AddDocumentFAB
 import com.design.template.ui.components.DocumentBlock
@@ -48,23 +49,28 @@ fun DocumentEditorScreen(
 
     Scaffold(
         topBar = {
+            // TopBar с улучшенным разделением
             Surface(
                 modifier = Modifier.fillMaxWidth(),
-                color = MaterialTheme.colorScheme.background,
-                shadowElevation = 0.dp
+                color = MaterialTheme.colorScheme.surface,
+                tonalElevation = 0.dp,
+                shadowElevation = 0.5.dp
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(Dimens.topBarHeight)
-                        .padding(horizontal = Dimens.topBarPadding),
+                        .padding(horizontal = 8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    IconButton(onClick = onBackClick) {
+                    IconButton(
+                        onClick = onBackClick,
+                        modifier = Modifier.size(40.dp)
+                    ) {
                         Icon(
                             imageVector = Icons.Outlined.ArrowBack,
                             contentDescription = "Back",
-                            modifier = Modifier.size(Dimens.topBarIconSize),
+                            modifier = Modifier.size(20.dp),
                             tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
@@ -75,14 +81,19 @@ fun DocumentEditorScreen(
                         text = folderName,
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                         modifier = Modifier.weight(1f)
                     )
 
-                    IconButton(onClick = onMenuClick) {
+                    IconButton(
+                        onClick = onMenuClick,
+                        modifier = Modifier.size(40.dp)
+                    ) {
                         Icon(
                             imageVector = Icons.Outlined.MoreVert,
                             contentDescription = "Menu",
-                            modifier = Modifier.size(Dimens.topBarIconSize),
+                            modifier = Modifier.size(20.dp),
                             tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
@@ -92,13 +103,10 @@ fun DocumentEditorScreen(
         floatingActionButton = {
             AddDocumentFAB(
                 onCameraClick = onCameraClick,
-                onGalleryClick = onGalleryClick,
-                modifier = Modifier.padding(
-                    end = Dimens.fabEndPadding,
-                    bottom = Dimens.fabBottomPadding
-                )
+                onGalleryClick = onGalleryClick
             )
         },
+        floatingActionButtonPosition = FabPosition.End,
         containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
 
@@ -107,23 +115,28 @@ fun DocumentEditorScreen(
                 .fillMaxSize()
                 .padding(padding)
                 .padding(horizontal = Dimens.spaceSmall),
-            verticalArrangement = Arrangement.spacedBy(Dimens.spaceMedium)
+            verticalArrangement = Arrangement.spacedBy(Dimens.spaceMedium),
+            contentPadding = PaddingValues(vertical = Dimens.spaceSmall)
         ) {
 
-            // ===== DOCUMENT HEADER =====
+            // Document Header с улучшенным spacing
             item {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            top = Dimens.spaceLarge,
-                            bottom = Dimens.spaceLarge
+                            top = 14.dp,
+                            start = 4.dp,
+                            end = 4.dp,
+                            bottom = 8.dp
                         )
                 ) {
                     Text(
                         text = documentTitle,
                         style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis
                     )
 
                     Spacer(modifier = Modifier.height(6.dp))
@@ -131,12 +144,14 @@ fun DocumentEditorScreen(
                     Text(
                         text = documentDescription,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = customColors.textSecondary
+                        color = customColors.textSecondary,
+                        maxLines = 3,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }
 
-            // ===== DOCUMENT BLOCKS =====
+            // Document blocks
             items(documents) { doc ->
                 DocumentBlock(
                     imageBitmap = doc.imageBitmap,
@@ -152,8 +167,9 @@ fun DocumentEditorScreen(
                 )
             }
 
+            // Bottom padding для FAB
             item {
-                Spacer(modifier = Modifier.height(96.dp))
+                Spacer(modifier = Modifier.height(80.dp))
             }
         }
     }
