@@ -8,8 +8,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.design.template.ui.theme.Dimens
@@ -37,7 +39,9 @@ fun DocumentImageCard(
                     Image(
                         bitmap = imageBitmap,
                         contentDescription = "Document image",
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(MaterialTheme.shapes.small),
                         contentScale = ContentScale.Crop
                     )
                 }
@@ -46,7 +50,9 @@ fun DocumentImageCard(
                     AsyncImage(
                         model = imageUrl,
                         contentDescription = "Document image",
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(MaterialTheme.shapes.small),
                         contentScale = ContentScale.Crop
                     )
                 }
@@ -56,23 +62,28 @@ fun DocumentImageCard(
                         imageVector = Icons.Outlined.InsertDriveFile,
                         contentDescription = "Document placeholder",
                         modifier = Modifier
-                            .size(72.dp)
+                            .size(64.dp)
                             .align(Alignment.Center),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.15f)
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.12f)
                     )
                 }
             }
 
             if (isLoading) {
-                Box(
+                Surface(
                     modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
+                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.7f)
                 ) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(28.dp),
-                        strokeWidth = 2.dp,
-                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
-                    )
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(32.dp),
+                            strokeWidth = 3.dp,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
                 }
             }
         }
@@ -97,19 +108,24 @@ fun ScannedTextCard(
         tonalElevation = 0.dp,
         shadowElevation = 0.dp
     ) {
-        Column(modifier = Modifier.padding(Dimens.textFieldPadding)) {
-
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(Dimens.textFieldPadding)
+        ) {
             Text(
-                text = "Scanned text",
+                text = "SCANNED TEXT",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-                modifier = Modifier.padding(bottom = Dimens.spaceSmall)
+                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.8f),
+                modifier = Modifier.padding(bottom = 8.dp)
             )
 
             Text(
                 text = text,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 12,
+                overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.weight(1f)
             )
 
@@ -142,13 +158,16 @@ fun TranslatedTextCard(
         tonalElevation = 0.dp,
         shadowElevation = 0.dp
     ) {
-        Column(modifier = Modifier.padding(Dimens.textFieldPadding)) {
-
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(Dimens.textFieldPadding)
+        ) {
             Text(
-                text = "Translated text",
+                text = "TRANSLATED TEXT",
                 style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
-                modifier = Modifier.padding(bottom = Dimens.spaceSmall)
+                color = MaterialTheme.colorScheme.error.copy(alpha = 0.75f),
+                modifier = Modifier.padding(bottom = 8.dp)
             )
 
             Text(
@@ -189,10 +208,15 @@ fun DocumentBlock(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.customColors.cardBg
         ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 1.dp
+        )
     ) {
-        Column(modifier = Modifier.fillMaxWidth()) {
-
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(1.dp)
+        ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(Dimens.spaceSmall)
@@ -216,7 +240,7 @@ fun DocumentBlock(
             HorizontalDivider(
                 modifier = Modifier.padding(vertical = Dimens.dividerMargin),
                 thickness = Dimens.dividerHeight,
-                color = MaterialTheme.customColors.divider.copy(alpha = 0.6f)
+                color = MaterialTheme.customColors.divider.copy(alpha = 0.5f)
             )
 
             TranslatedTextCard(
