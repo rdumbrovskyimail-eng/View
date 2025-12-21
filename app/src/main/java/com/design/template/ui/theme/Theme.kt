@@ -1,64 +1,108 @@
 package com.design.template.ui.theme
 
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-// =======================
-// Light Theme Colors
-// =======================
+// Импортируем цвета из Color.kt
+private val LightColorScheme = lightColorScheme(
+    primary = LightPrimary,
+    onPrimary = Color.White,
+    primaryContainer = LightPrimaryContainer,
+    onPrimaryContainer = LightPrimary,
+    
+    secondary = LightSecondary,
+    onSecondary = Color.White,
+    
+    surface = LightSurface,
+    onSurface = LightText,
+    surfaceVariant = LightSurfaceVariant,
+    onSurfaceVariant = LightOnSurfaceVariant,
+    
+    background = LightBackground,
+    onBackground = LightText,
+    
+    outline = LightOutline,
+    outlineVariant = LightOutline.copy(alpha = 0.5f),
+    
+    error = LightError,
+    onError = Color.White,
+    errorContainer = LightErrorBg,
+    onErrorContainer = LightError,
+    
+    scrim = Color.Black.copy(alpha = 0.32f)
+)
 
-// Поверхности (эффект "бумаги")
-val LightSurface = Color(0xFFFAFAF8)
-val LightBackground = Color(0xFFF6F6F4)
-val LightSurfaceVariant = Color(0xFFF0F0EE)
+private val DarkColorScheme = darkColorScheme(
+    primary = DarkPrimary,
+    onPrimary = Color.White,
+    primaryContainer = DarkPrimaryContainer,
+    onPrimaryContainer = DarkPrimary,
+    
+    secondary = DarkSecondary,
+    onSecondary = Color.White,
+    
+    surface = DarkSurface,
+    onSurface = DarkText,
+    surfaceVariant = DarkSurfaceVariant,
+    onSurfaceVariant = DarkOnSurfaceVariant,
+    
+    background = DarkBackground,
+    onBackground = DarkText,
+    
+    outline = DarkOutline,
+    outlineVariant = DarkOutline.copy(alpha = 0.5f),
+    
+    error = DarkError,
+    onError = Color.White,
+    errorContainer = DarkErrorBg,
+    onErrorContainer = DarkError,
+    
+    scrim = Color.Black.copy(alpha = 0.5f)
+)
 
-// ОСНОВНОЙ АКЦЕНТ — интеллектуальный синий
-val LightPrimary = Color(0xFF4A6FA5)
-val LightPrimaryContainer = Color(0xFFE8EEF7)
+@Composable
+fun DocumentScannerTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit
+) {
+    val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
 
-// Вторичный акцент (спокойный, поддерживающий)
-val LightSecondary = Color(0xFF6B7C93)
+    MaterialTheme(
+        colorScheme = colorScheme,
+        typography = AppTypography,
+        shapes = AppShapes,
+        content = content
+    )
+}
 
-// Текст
-val LightText = Color(0xFF2E2E2E)
-val LightTextSecondary = Color(0xFF6B6B6B)
-val LightOnSurfaceVariant = Color(0xFF45464F)
+val MaterialTheme.customColors: CustomColors
+    @Composable
+    get() = if (isSystemInDarkTheme()) {
+        CustomColors(
+            cardBg = DarkCardBg,
+            chipBg = DarkChipBg,
+            fieldBg = DarkFieldBg,
+            divider = DarkDivider,
+            textSecondary = DarkTextSecondary
+        )
+    } else {
+        CustomColors(
+            cardBg = LightCardBg,
+            chipBg = LightChipBg,
+            fieldBg = LightFieldBg,
+            divider = LightDivider,
+            textSecondary = LightTextSecondary
+        )
+    }
 
-// Границы и разделители
-val LightOutline = Color(0xFFE0E0DE)
-val LightDivider = Color(0xFFE2E2E0)
-
-// Карточки и поля
-val LightCardBg = Color(0xFFFAFAF8)
-val LightChipBg = Color(0xFFECECEC)
-val LightFieldBg = Color(0xFFF3F3F1)
-
-// Ошибки
-val LightError = Color(0xFFD32F2F)
-val LightErrorBg = Color(0xFFFFEBEE)
-
-// =======================
-// Dark Theme Colors
-// =======================
-
-val DarkSurface = Color(0xFF1C1C1E)
-val DarkBackground = Color(0xFF141416)
-val DarkSurfaceVariant = Color(0xFF282828)
-
-val DarkPrimary = Color(0xFF7FA6D9)
-val DarkPrimaryContainer = Color(0xFF2A3F5F)
-
-val DarkSecondary = Color(0xFF8FA1B8)
-
-val DarkText = Color(0xFFE6E6E6)
-val DarkTextSecondary = Color(0xFFA0A0A0)
-val DarkOnSurfaceVariant = Color(0xFFC6C6D0)
-
-val DarkOutline = Color(0xFF2A2A2C)
-val DarkDivider = Color(0xFF303032)
-
-val DarkCardBg = Color(0xFF1F1F21)
-val DarkChipBg = Color(0xFF262628)
-val DarkFieldBg = Color(0xFF1A1A1C)
-
-val DarkError = Color(0xFFEF5350)
-val DarkErrorBg = Color(0xFF3D1F1F)
+data class CustomColors(
+    val cardBg: Color,
+    val chipBg: Color,
+    val fieldBg: Color,
+    val divider: Color,
+    val textSecondary: Color
+)
