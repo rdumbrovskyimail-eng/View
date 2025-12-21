@@ -23,33 +23,37 @@ fun AddDocumentFAB(
 ) {
     var showBottomSheet by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState()
-    
+
+    // ===== FAB — тихий, не доминирующий =====
     FloatingActionButton(
         onClick = { showBottomSheet = true },
         modifier = modifier.size(Dimens.fabSize),
         shape = MaterialTheme.shapes.small,
-        containerColor = MaterialTheme.colorScheme.primary,
+        containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.85f),
         contentColor = MaterialTheme.colorScheme.onPrimary
     ) {
         Icon(
             imageVector = Icons.Outlined.Add,
             contentDescription = "Add document",
-            modifier = Modifier.size(24.dp)
+            modifier = Modifier.size(22.dp)
         )
     }
-    
+
     if (showBottomSheet) {
         ModalBottomSheet(
             onDismissRequest = { showBottomSheet = false },
             sheetState = sheetState,
             containerColor = MaterialTheme.colorScheme.surface,
-            shape = MaterialTheme.shapes.large
+            shape = MaterialTheme.shapes.large,
+            tonalElevation = 0.dp
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(Dimens.bottomSheetPadding)
             ) {
+
+                // ===== Handle — очень тихий =====
                 Box(
                     modifier = Modifier
                         .width(Dimens.bottomSheetHandleWidth)
@@ -58,16 +62,18 @@ fun AddDocumentFAB(
                 ) {
                     HorizontalDivider(
                         thickness = Dimens.bottomSheetHandleHeight,
-                        color = MaterialTheme.colorScheme.outline
+                        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
                     )
                 }
-                
-                Spacer(modifier = Modifier.height(12.dp))
-                
+
+                Spacer(modifier = Modifier.height(16.dp))
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    horizontalArrangement = Arrangement.spacedBy(Dimens.spaceMedium)
                 ) {
+
+                    // ===== Camera =====
                     OutlinedButton(
                         onClick = {
                             onCameraClick()
@@ -82,25 +88,28 @@ fun AddDocumentFAB(
                         ),
                         border = BorderStroke(
                             Dimens.borderWidth,
-                            MaterialTheme.colorScheme.outline
+                            MaterialTheme.colorScheme.outline.copy(alpha = 0.6f)
                         )
                     ) {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(6.dp)
+                            verticalArrangement = Arrangement.spacedBy(4.dp)
                         ) {
                             Icon(
                                 imageVector = Icons.Outlined.CameraAlt,
                                 contentDescription = "Camera",
-                                modifier = Modifier.size(Dimens.bottomSheetIconSize)
+                                modifier = Modifier.size(Dimens.bottomSheetIconSize),
+                                tint = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
                                 text = "Camera",
-                                style = MaterialTheme.typography.labelMedium
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f)
                             )
                         }
                     }
-                    
+
+                    // ===== Gallery =====
                     OutlinedButton(
                         onClick = {
                             onGalleryClick()
@@ -115,21 +124,23 @@ fun AddDocumentFAB(
                         ),
                         border = BorderStroke(
                             Dimens.borderWidth,
-                            MaterialTheme.colorScheme.outline
+                            MaterialTheme.colorScheme.outline.copy(alpha = 0.6f)
                         )
                     ) {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(6.dp)
+                            verticalArrangement = Arrangement.spacedBy(4.dp)
                         ) {
                             Icon(
                                 imageVector = Icons.Outlined.PhotoLibrary,
                                 contentDescription = "Gallery",
-                                modifier = Modifier.size(Dimens.bottomSheetIconSize)
+                                modifier = Modifier.size(Dimens.bottomSheetIconSize),
+                                tint = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
                                 text = "Gallery",
-                                style = MaterialTheme.typography.labelMedium
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.85f)
                             )
                         }
                     }
