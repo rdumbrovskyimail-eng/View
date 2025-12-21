@@ -1,3 +1,5 @@
+package com.design.template
+
 import android.content.ContentValues
 import android.content.Context
 import android.os.Build
@@ -8,7 +10,6 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStreamReader
-import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -159,7 +160,7 @@ class LogcatCollector(private val context: Context) {
                     android.util.Log.i("LogcatCollector", "Logs saved: $fileName")
                 }
             } else {
-                // Android 9 и ниже (на всякий случай)
+                // Android 9 и ниже
                 val downloadsDir = Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_DOWNLOADS
                 )
