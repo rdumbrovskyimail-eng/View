@@ -1,22 +1,22 @@
 package com.design.template.ui.components
 
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import com.design.template.ui.theme.Dimens
 import com.design.template.ui.theme.customColors
 
 enum class ActionType {
-    GPT,
-    COPY,
-    PASTE,
-    SHARE,
-    DELETE
+    GPT, COPY, PASTE, SHARE, DELETE
 }
 
 @Composable
@@ -25,6 +25,19 @@ fun ActionButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+    
+    // Микро-анимация нажатия
+    val scale by animateFloatAsState(
+        targetValue = if (isPressed) 0.92f else 1f,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessHigh
+        ),
+        label = "button_scale"
+    )
+
     val isDanger = type == ActionType.DELETE
     val isGpt = type == ActionType.GPT
 
@@ -36,17 +49,27 @@ fun ActionButton(
         ActionType.DELETE -> Icons.Outlined.Delete
     }
 
-    // ===== GPT — тихий акцент =====
+    // GPT — выделенная кнопка с улучшенным контрастом
     if (isGpt) {
         FilledTonalButton(
             onClick = onClick,
-            modifier = modifier.size(Dimens.actionButtonSize),
+            modifier = modifier
+                .size(Dimens.actionButtonSize)
+                .graphicsLayer {
+                    scaleX = scale
+                    scaleY = scale
+                },
             shape = MaterialTheme.shapes.extraSmall,
             colors = ButtonDefaults.filledTonalButtonColors(
-                containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
+                containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.12f),
                 contentColor = MaterialTheme.colorScheme.primary
             ),
-            contentPadding = PaddingValues(0.dp)
+            contentPadding = PaddingValues(0.dp),
+            interactionSource = interactionSource,
+            elevation = ButtonDefaults.buttonElevation(
+                defaultElevation = 0.dp,
+                pressedElevation = 0.dp
+            )
         ) {
             Icon(
                 imageVector = icon,
@@ -57,20 +80,26 @@ fun ActionButton(
         return
     }
 
-    // ===== DELETE — отдельно и аккуратно =====
+    // DELETE — четкая граница с error цветом
     if (isDanger) {
         OutlinedButton(
             onClick = onClick,
-            modifier = modifier.size(Dimens.actionButtonSize),
+            modifier = modifier
+                .size(Dimens.actionButtonSize)
+                .graphicsLayer {
+                    scaleX = scale
+                    scaleY = scale
+                },
             shape = MaterialTheme.shapes.extraSmall,
             colors = ButtonDefaults.outlinedButtonColors(
                 contentColor = MaterialTheme.colorScheme.error
             ),
             border = BorderStroke(
                 Dimens.borderWidth,
-                MaterialTheme.colorScheme.error.copy(alpha = 0.3f)
+                MaterialTheme.colorScheme.error.copy(alpha = 0.35f)
             ),
-            contentPadding = PaddingValues(0.dp)
+            contentPadding = PaddingValues(0.dp),
+            interactionSource = interactionSource
         ) {
             Icon(
                 imageVector = icon,
@@ -81,19 +110,25 @@ fun ActionButton(
         return
     }
 
-    // ===== Остальные — инструменты =====
+    // Остальные кнопки — с улучшенными границами
     OutlinedButton(
         onClick = onClick,
-        modifier = modifier.size(Dimens.actionButtonSize),
+        modifier = modifier
+            .size(Dimens.actionButtonSize)
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
+            },
         shape = MaterialTheme.shapes.extraSmall,
         colors = ButtonDefaults.outlinedButtonColors(
-            contentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.75f)
+            contentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
         ),
         border = BorderStroke(
             Dimens.borderWidth,
-            MaterialTheme.colorScheme.outline.copy(alpha = 0.6f)
+            MaterialTheme.colorScheme.outline.copy(alpha = 0.5f)
         ),
-        contentPadding = PaddingValues(0.dp)
+        contentPadding = PaddingValues(0.dp),
+        interactionSource = interactionSource
     ) {
         Icon(
             imageVector = icon,
