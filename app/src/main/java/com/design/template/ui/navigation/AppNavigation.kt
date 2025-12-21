@@ -7,9 +7,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.design.template.DocumentScannerApp
 
-/**
- * Central place for app navigation
- */
 @Composable
 fun AppNavigation(
     navController: NavHostController = rememberNavController()
@@ -19,23 +16,11 @@ fun AppNavigation(
         startDestination = AppRoute.Main.route
     ) {
         composable(route = AppRoute.Main.route) {
-            MainScreen()
+            DocumentScannerApp()
         }
     }
 }
 
-/**
- * Screens wrapper
- * (separation between navigation and UI root)
- */
-@Composable
-private fun MainScreen() {
-    DocumentScannerApp()
-}
-
-/**
- * Typed routes — safe & scalable
- */
 sealed class AppRoute(val route: String) {
     data object Main : AppRoute("main")
 }
